@@ -1,21 +1,21 @@
 package PracticaFinalEstructuras;
 
-public class Ingeniero {
+public class EstDiseño {
     private String cedula;
     private String nombre;
     private String apellido;
     private String telefono;
-    private int semestre;
-    private float promedio;
-    private String serial;
-    public Ingeniero(String cedula, String nombre, String apellido, String telefono, int semestre, float promedio,
-            String serial) {
+    private String M_estudio;
+    private int c_materias;
+    private int serial;
+    public EstDiseño(String cedula, String nombre, String apellido, String telefono, String m_estudio, int c_materias,
+            int serial) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-        this.semestre = semestre;
-        this.promedio = promedio;
+        M_estudio = m_estudio;
+        this.c_materias = c_materias;
         this.serial = serial;
     }
     public String getCedula() {
@@ -42,22 +42,22 @@ public class Ingeniero {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    public int getSemestre() {
-        return semestre;
+    public String getM_estudio() {
+        return M_estudio;
     }
-    public void setSemestre(int semestre) {
-        this.semestre = semestre;
+    public void setM_estudio(String m_estudio) {
+        M_estudio = m_estudio;
     }
-    public float getPromedio() {
-        return promedio;
+    public int getC_materias() {
+        return c_materias;
     }
-    public void setPromedio(float promedio) {
-        this.promedio = promedio;
+    public void setC_materias(int c_materias) {
+        this.c_materias = c_materias;
     }
-    public String getSerial() {
+    public int getSerial() {
         return serial;
     }
-    public void setSerial(String serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
