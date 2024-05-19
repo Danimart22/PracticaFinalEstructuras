@@ -50,5 +50,12 @@ public class portatil{
     public void setCPU(String cPU) {
         CPU = cPU;
     }
+    public portatil(String marca, float tamaño, float precio, String oS, String cPU) {
+        this.marca = marca;
+        this.tamaño = tamaño;
+        this.precio = precio;
+        OS = oS;
+        CPU = cPU;
+    }
     
 }
