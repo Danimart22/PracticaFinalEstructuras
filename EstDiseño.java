@@ -7,9 +7,9 @@ public class EstDiseño {
     private String telefono;
     private String M_estudio;
     private int c_materias;
-    private int serial;
+    private String serial;
     public EstDiseño(String cedula, String nombre, String apellido, String telefono, String m_estudio, int c_materias,
-            int serial) {
+            String serial) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -54,10 +54,10 @@ public class EstDiseño {
     public void setC_materias(int c_materias) {
         this.c_materias = c_materias;
     }
-    public int getSerial() {
+    public String getSerial() {
         return serial;
     }
-    public void setSerial(int serial) {
+    public void setSerial(String serial) {
         this.serial = serial;
     }
     

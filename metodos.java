@@ -16,6 +16,7 @@ public class metodos {
             decision = Integer.parseInt(JOptionPane.showInputDialog("\n---MENÚ DE PRESTAMOS ESTUDIANTES DE INGENIERIA Y DISEÑO---\n\n1.ESTUDIANTES DE INGENIERIA\n2.ESTUDIANTES DE DISEÑO\n3.IMPRIMIR INVENTARIO TOTAL\n0.SALIR"));
             switch (decision) {
                 case 1:
+                do{
                     opcion = Integer.parseInt(JOptionPane.showInputDialog("\n---MENÚ DE PRESTAMOS ESTUDIANTES DE INGENIERIA---\n\n1.Registrar prestamo de portatil\n2.Modificar prestamo de equipo\n3.Devolución del equipo\n4.Buscar equipo\n5.Volver al menú principal"));
                     switch (opcion) {
                         case 1:
@@ -24,7 +25,7 @@ public class metodos {
                             break;
                         case 2:
                             listaPortatil = ModificarPort(listaPortatil);
-
+                             
                             break;
                         case 3:
                             listaPortatil = DevolverPort(listaPortatil);
@@ -38,14 +39,40 @@ public class metodos {
                         default:
                             JOptionPane.showMessageDialog(null, "\nIngrese una de las opciones validas");
                             break;
+                        }
+                    }while(opcion != 5);
+                    break;
+                    case 2:
+                    do{
+                    opcion = Integer.parseInt(JOptionPane.showInputDialog("\n---MENÚ DE PRESTAMOS DE ESTUDIANTES DE DISEÑO---\n\n1.Registrar prestamo de Tableta grafica\n2.Modificar registro\n3.Devolución del equipo\n4.Buscar el equipo\n5.Volver al menú principal "));
+                    switch (opcion) {
+                        case 1:
+                            listaTableta.add(DeclararTablet(listaEstudiantes));
+                            MostrarTablet(listaTableta);
+                            break;
+                        case 2:
+                            listaTableta = ModificarTablet(listaTableta);
+                            MostrarTablet(listaTableta);
+                        break;    
+                        case 3:
+                            listaTableta = DevolverTablet(listaTableta);
+                            MostrarTablet(listaTableta);
+                        break;
+                        case 4:
+                            BuscarTablet(listaTableta);
+                        break;
+                        default:
+                            break;
                     }
+                }while(opcion !=5);
+                    
                     break;
 
                 default:
                     JOptionPane.showMessageDialog(null, "\nIngrese una de las opciones validas");
                     break;
             }
-        } while (decision != 5);
+        } while (decision != 0);
     }
 
     public static LinkedList<Ingeniero> DeclararIngeniero() {
@@ -103,7 +130,7 @@ public class metodos {
     public static LinkedList<EstDiseño> DeclararDiseño() {
         String decision = "";
         LinkedList<EstDiseño> listaDiseño = new LinkedList<>();
-        EstDiseño diseño = new EstDiseño(null, null, null, null, null, 0, 0);
+        EstDiseño diseño = new EstDiseño(null, null, null, null, null, 0, null);
         do {
 
             try {
@@ -149,12 +176,14 @@ public class metodos {
 
     public static portatil DeclararPortatil(LinkedList<Ingeniero> listIng) {
         portatil pc = new portatil(null, null, 0, 0, null, null);
+        String numero = "";
         String opcion = "";
         Ingeniero elegido = new Ingeniero(null, null, null, null, 0, 0, null);
         for (Ingeniero Ing : listIng) {
             opcion = JOptionPane.showInputDialog("\nEl que hace el prestamo es(S/N): " + Ing.getNombre() + "\nCon cedula: " + Ing.getCedula()).toLowerCase();
             if (opcion.equals("s")) {
                 elegido = Ing;
+                numero = elegido.getCedula();
             }
         }
         try {
@@ -219,15 +248,31 @@ public class metodos {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
+        for (Ingeniero p : listIng) {
+            if (p.getCedula().equals(numero)) {
+                listIng.set(listIng.indexOf(p), elegido);
+            }
+        }
 
         return pc;
     }
 
-    public static Tableta_grafica DeclararTablet() {
-
+    public static Tableta_grafica DeclararTablet(LinkedList<EstDiseño> listaDiseño) {
+        String opcion = "";
+        String numero = "";
+        EstDiseño Est = new EstDiseño(null, null, null, null, null, 0, null);
         Tableta_grafica tablet = new Tableta_grafica(null, null, 0, 0, null, 0);
+        for (EstDiseño Estu : listaDiseño) {
+            opcion = JOptionPane.showInputDialog("\nEl que hace el prestamo es: "+Estu.getNombre()+" con cedula: "+Estu.getCedula()+" (S/N)").toLowerCase();
+            if(opcion.equals("s")){
+                Est = Estu;
+                numero = Est.getCedula();
+            }
+        }
         try {
-            tablet.setSerial(JOptionPane.showInputDialog("\nDigite el serial de la tableta: "));
+            String serial = JOptionPane.showInputDialog("\nDigite el serial de el portatil: ");
+            tablet.setSerial(serial);
+            Est.setSerial(serial);
         } catch (InputMismatchException e) {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
@@ -268,6 +313,11 @@ public class metodos {
             }
         } catch (NumberFormatException j) {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
+        for (EstDiseño p : listaDiseño) {
+            if (p.getCedula().equals(numero)) {
+                listaDiseño.set(listaDiseño.indexOf(p), Est);
+            }
         }
 
         return tablet;
@@ -371,5 +421,78 @@ public class metodos {
         }
 
     }
-    
+    public static void MostrarTablet(LinkedList<Tableta_grafica> listaTablet){
+        for (Tableta_grafica Tab : listaTablet) {
+            JOptionPane.showMessageDialog(null, "Serial: "+Tab.getSerial()+"\nMarca: "+Tab.getMarca()+"\nTamaño: "+Tab.getTamaño()+"\nPrecio: "+Tab.getPrecio()+"\nAlmacenamiento: "+Tab.getAlmacenamiento()+"\nPeso: "+Tab.getPeso());
+        }
+
+    }
+    public static LinkedList<Tableta_grafica> ModificarTablet(LinkedList<Tableta_grafica> listtatblet){
+        Tableta_grafica tablet = new Tableta_grafica(null, null, 0, 0, null, 0);
+        String serial = JOptionPane.showInputDialog("\nIngrese el serial de la tablet: ");
+        try {
+            tablet.setSerial(JOptionPane.showInputDialog("\nDigite el serial de la tablet: "));
+        } catch (InputMismatchException e) {
+            JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
+        try {
+            tablet.setMarca(JOptionPane.showInputDialog("\nDigite la marca de la tablet"));
+        } catch (InputMismatchException e) {
+            JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
+        try {
+            tablet.setTamaño(Float.parseFloat(JOptionPane.showInputDialog("\nDigite el tamaño (En pulgadas) de la tablet: ")));
+        } catch (InputMismatchException e) {
+            JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
+        try {
+            tablet.setPrecio(Float.parseFloat(JOptionPane.showInputDialog("\nIngrese el precio de la tablet: ")));
+        } catch (InputMismatchException e) {
+            JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
+        try {
+            int espacio = 0;
+            espacio = Integer.parseInt(JOptionPane.showInputDialog("\n***MENÚ DE SELECCIÓN DE CANTIDAD DE ESPACIO***\n1. 256 GB 7\n2. 500 GB 10\n3. 1 TB\nElija una opción: "));
+            switch (espacio) {
+                case 1:
+                    tablet.setAlmacenamiento("256 GB");
+                    break;
+                case 2:
+                    tablet.setAlmacenamiento("500 GB");
+                    break;
+                case 3:
+                    tablet.setAlmacenamiento("1 TB");
+                    break;
+
+                default:
+                    break;
+            }
+        }catch (NumberFormatException j) {
+            JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
+        for (Tableta_grafica Tab : listtatblet) {
+            if(Tab.getSerial().equals(serial)){
+               listtatblet.set(listtatblet.indexOf(Tab), tablet);
+            }
+            
+        }
+        return listtatblet;
+    }
+    public static LinkedList<Tableta_grafica> DevolverTablet(LinkedList<Tableta_grafica> listaTablet){
+      String serial = JOptionPane.showInputDialog("Ingrese el serial de el portatil que desea devolver: ");
+      for (Tableta_grafica tab : listaTablet) {
+        if(tab.getSerial().equals(serial)){
+            listaTablet.remove(tab);
+        }
+      }
+      return listaTablet;
+    }
+    public static void BuscarTablet(LinkedList<Tableta_grafica> listaTablet){
+      String serial = JOptionPane.showInputDialog("Ingrese el serial de la tablet que desea buscar: ");
+      for (Tableta_grafica Tab : listaTablet) {
+        if(Tab.getSerial().equals(serial)){
+            JOptionPane.showMessageDialog(null, "Serial: "+Tab.getSerial()+"\nMarca: "+Tab.getMarca()+"\nTamaño: "+Tab.getTamaño()+"\nPrecio: "+Tab.getPrecio()+"\nAlmacenamiento: "+Tab.getAlmacenamiento()+"\nPeso: "+Tab.getPeso());
+        }
+      }
+    }
 }
