@@ -1,5 +1,6 @@
 package PracticaFinalEstructuras;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
@@ -81,11 +82,19 @@ public class metodos {
 
                     break;
                 case 3:
+                    String exportar = "";
                     MostrarIngenieros(listaIngenieros);
                     MostrarDiseño(listaDiseño);
                     MostrarTablet(listaTableta);
                     MostrarPortatil(listaPortatil);
+                    exportar = JOptionPane.showInputDialog("¿Desea que se exporten los datos del inventario a un archivo txt? (S/N)").toLowerCase();
+                    if(exportar.equals("s")){
+                        exportarDatos(listaIngenieros, listaDiseño, listaPortatil, listaTableta);
+                    }
                     break;
+                case 0:
+                JOptionPane.showMessageDialog(null, "Cerrando programa de resgistro...");
+                break;    
 
                 default:
                     JOptionPane.showMessageDialog(null, "\nIngrese una de las opciones validas");
@@ -284,10 +293,11 @@ public class metodos {
             if (opcion.equals("s")) {
                 Est = Estu;
                 numero = Est.getCedula();
+                break;
             }
         }
         try {
-            String serial = JOptionPane.showInputDialog("\nDigite el serial de el portatil: ");
+            String serial = JOptionPane.showInputDialog("\nDigite el serial de la tablet: ");
             tablet.setSerial(serial);
             Est.setSerial(serial);
         } catch (InputMismatchException e) {
@@ -314,7 +324,7 @@ public class metodos {
         try {
             int espacio = 0;
             espacio = Integer.parseInt(JOptionPane.showInputDialog(
-                    "\n***MENÚ DE SELECCIÓN DE CANTIDAD DE ESPACIO***\n1. 256 GB 7\n2. 500 GB 10\n3. 1 TB\nElija una opción: "));
+                    "\n***MENÚ DE SELECCIÓN DE CANTIDAD DE ESPACIO***\n1. 256 GB \n2. 500 GB \n3. 1 TB\nElija una opción: "));
             switch (espacio) {
                 case 1:
                     tablet.setAlmacenamiento("256 GB");
@@ -508,6 +518,11 @@ public class metodos {
         } catch (NumberFormatException j) {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
+        try {
+            tablet.setPeso(Float.parseFloat(JOptionPane.showInputDialog("\nIngrese el peso (En gramos) de la tableta: ")));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
+        }
         for (Tableta_grafica Tab : listtatblet) {
             if (Tab.getSerial().equals(serial)) {
                 listtatblet.set(listtatblet.indexOf(Tab), tablet);
@@ -556,4 +571,23 @@ public class metodos {
                             + "\nCantidad de asignaturas: " + p.getC_materias() + "\nSerial: " + p.getSerial());
         }
     }
+    public static void exportarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño, LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
+    try (FileWriter writer = new FileWriter("datos.txt")) {
+        for (Ingeniero ingeniero : listaIngenieros) {
+            writer.write("Ingeniero:  Cedula: " + ingeniero.getCedula() + " Nombre: " + ingeniero.getNombre() + " Apellido: " + ingeniero.getApellido() + " Telefono: " + ingeniero.getTelefono() + " Semestre: " + ingeniero.getSemestre() + " Promedio: " + ingeniero.getPromedio() + " Serial: " + ingeniero.getSerial() + "\n");
+        }
+        for (EstDiseño diseño : listaDiseño) {
+            writer.write("Diseño:  Cedula: " + diseño.getCedula() + " Nombre: " + diseño.getNombre() + " Apellido: " + diseño.getApellido() + " Telefono: " + diseño.getTelefono() + " Modalidad de estudio: " + diseño.getM_estudio() + " Cantidad de materias: " + diseño.getC_materias() + " Serial: " + diseño.getSerial() + "\n");
+        }
+        for (portatil pc : listaPortatil) {
+            writer.write("Portatil:  Serial: " + pc.getSerial() + " Marca: " + pc.getMarca() + " Tamaño: " + pc.getTamaño() + " Precio: " + pc.getPrecio() + " Sistema Operativo: " + pc.getOS() + " Procesador: " + pc.getCPU() + "\n");
+        }
+        for (Tableta_grafica tablet : listaTableta) {
+            writer.write("Tableta:  Serial: " + tablet.getSerial() + " Marca: " + tablet.getMarca() + " Tamaño: " + tablet.getTamaño() + " Precio: " + tablet.getPrecio() + " Almacenamiento: " + tablet.getAlmacenamiento() + " Peso: " + tablet.getPeso() + "\n");
+        }
+        JOptionPane.showMessageDialog(null, "Datos exportados exitosamente.");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Error al exportar datos: " + e.getMessage());
+    }
+}
 }
