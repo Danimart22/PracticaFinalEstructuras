@@ -1,4 +1,7 @@
 package PracticaFinalEstructuras;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -20,12 +23,13 @@ public class metodos {
         } while (condicion.equals("S"));
         do {
             listaDiseño.add(DeclararDiseño());
-            condicion = JOptionPane.showInputDialog("\n¿Desea ingresar otro estudiante de diseño?(S/N): ").toUpperCase();
+            condicion = JOptionPane.showInputDialog("\n¿Desea ingresar otro estudiante de diseño?(S/N): ")
+                    .toUpperCase();
         } while (condicion.equals("S"));
         LinkedList<portatil> listaPortatil = new LinkedList<>();
         do {
             decision = Integer.parseInt(JOptionPane.showInputDialog(
-                    "\n---MENÚ DE PRESTAMOS ESTUDIANTES DE INGENIERIA Y DISEÑO---\n\n1.ESTUDIANTES DE INGENIERIA\n2.ESTUDIANTES DE DISEÑO\n3.IMPRIMIR INVENTARIO TOTAL\n0.SALIR"));
+                    "\n---MENÚ DE PRESTAMOS ESTUDIANTES DE INGENIERIA Y DISEÑO---\n\n1.ESTUDIANTES DE INGENIERIA\n2.ESTUDIANTES DE DISEÑO\n3.IMPRIMIR INVENTARIO TOTAL\n4.INSERTAR DATOS MEDIANTE LA IMPORTACIÓN\n0.SALIR"));
             switch (decision) {
                 case 1:
                     do {
@@ -87,14 +91,19 @@ public class metodos {
                     MostrarDiseño(listaDiseño);
                     MostrarTablet(listaTableta);
                     MostrarPortatil(listaPortatil);
-                    exportar = JOptionPane.showInputDialog("¿Desea que se exporten los datos del inventario a un archivo txt? (S/N)").toLowerCase();
-                    if(exportar.equals("s")){
+                    exportar = JOptionPane
+                            .showInputDialog("¿Desea que se exporten los datos del inventario a un archivo txt? (S/N)")
+                            .toLowerCase();
+                    if (exportar.equals("s")) {
                         exportarDatos(listaIngenieros, listaDiseño, listaPortatil, listaTableta);
                     }
                     break;
+                    case 4:
+                    importarDatos(listaIngenieros, listaDiseño, listaPortatil, listaTableta);
+                    break;
                 case 0:
-                JOptionPane.showMessageDialog(null, "Cerrando programa de resgistro...");
-                break;    
+                    JOptionPane.showMessageDialog(null, "Cerrando programa de resgistro...");
+                    break;
 
                 default:
                     JOptionPane.showMessageDialog(null, "\nIngrese una de las opciones validas");
@@ -343,11 +352,12 @@ public class metodos {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
         try {
-            tablet.setPeso(Float.parseFloat(JOptionPane.showInputDialog("\nIngrese el peso (En gramos) de la tableta: ")));
+            tablet.setPeso(
+                    Float.parseFloat(JOptionPane.showInputDialog("\nIngrese el peso (En gramos) de la tableta: ")));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
-        
+
         for (EstDiseño p : listaDiseño) {
             if (p.getCedula().equals(numero)) {
                 listaDiseño.set(listaDiseño.indexOf(p), Est);
@@ -519,7 +529,8 @@ public class metodos {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
         try {
-            tablet.setPeso(Float.parseFloat(JOptionPane.showInputDialog("\nIngrese el peso (En gramos) de la tableta: ")));
+            tablet.setPeso(
+                    Float.parseFloat(JOptionPane.showInputDialog("\nIngrese el peso (En gramos) de la tableta: ")));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "\nIngreso un tipo de dato no valido");
         }
@@ -571,23 +582,64 @@ public class metodos {
                             + "\nCantidad de asignaturas: " + p.getC_materias() + "\nSerial: " + p.getSerial());
         }
     }
-    public static void exportarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño, LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
-    try (FileWriter writer = new FileWriter("datos.txt")) {
-        for (Ingeniero ingeniero : listaIngenieros) {
-            writer.write("Ingeniero:  Cedula: " + ingeniero.getCedula() + " Nombre: " + ingeniero.getNombre() + " Apellido: " + ingeniero.getApellido() + " Telefono: " + ingeniero.getTelefono() + " Semestre: " + ingeniero.getSemestre() + " Promedio: " + ingeniero.getPromedio() + " Serial: " + ingeniero.getSerial() + "\n");
+
+    public static void exportarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño,
+            LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
+        try (FileWriter writer = new FileWriter("datos.txt")) {
+            for (Ingeniero ingeniero : listaIngenieros) {
+                writer.write("Ingeniero:  Cedula: " + ingeniero.getCedula() + " Nombre: " + ingeniero.getNombre()
+                        + " Apellido: " + ingeniero.getApellido() + " Telefono: " + ingeniero.getTelefono()
+                        + " Semestre: " + ingeniero.getSemestre() + " Promedio: " + ingeniero.getPromedio()
+                        + " Serial: " + ingeniero.getSerial() + "\n");
+            }
+            for (EstDiseño diseño : listaDiseño) {
+                writer.write("Diseño:  Cedula: " + diseño.getCedula() + " Nombre: " + diseño.getNombre() + " Apellido: "
+                        + diseño.getApellido() + " Telefono: " + diseño.getTelefono() + " Modalidad de estudio: "
+                        + diseño.getM_estudio() + " Cantidad de materias: " + diseño.getC_materias() + " Serial: "
+                        + diseño.getSerial() + "\n");
+            }
+            for (portatil pc : listaPortatil) {
+                writer.write("Portatil:  Serial: " + pc.getSerial() + " Marca: " + pc.getMarca() + " Tamaño: "
+                        + pc.getTamaño() + " Precio: " + pc.getPrecio() + " Sistema Operativo: " + pc.getOS()
+                        + " Procesador: " + pc.getCPU() + "\n");
+            }
+            for (Tableta_grafica tablet : listaTableta) {
+                writer.write("Tableta:  Serial: " + tablet.getSerial() + " Marca: " + tablet.getMarca() + " Tamaño: "
+                        + tablet.getTamaño() + " Precio: " + tablet.getPrecio() + " Almacenamiento: "
+                        + tablet.getAlmacenamiento() + " Peso: " + tablet.getPeso() + "\n");
+            }
+            JOptionPane.showMessageDialog(null, "Datos exportados exitosamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al exportar datos: " + e.getMessage());
         }
-        for (EstDiseño diseño : listaDiseño) {
-            writer.write("Diseño:  Cedula: " + diseño.getCedula() + " Nombre: " + diseño.getNombre() + " Apellido: " + diseño.getApellido() + " Telefono: " + diseño.getTelefono() + " Modalidad de estudio: " + diseño.getM_estudio() + " Cantidad de materias: " + diseño.getC_materias() + " Serial: " + diseño.getSerial() + "\n");
-        }
-        for (portatil pc : listaPortatil) {
-            writer.write("Portatil:  Serial: " + pc.getSerial() + " Marca: " + pc.getMarca() + " Tamaño: " + pc.getTamaño() + " Precio: " + pc.getPrecio() + " Sistema Operativo: " + pc.getOS() + " Procesador: " + pc.getCPU() + "\n");
-        }
-        for (Tableta_grafica tablet : listaTableta) {
-            writer.write("Tableta:  Serial: " + tablet.getSerial() + " Marca: " + tablet.getMarca() + " Tamaño: " + tablet.getTamaño() + " Precio: " + tablet.getPrecio() + " Almacenamiento: " + tablet.getAlmacenamiento() + " Peso: " + tablet.getPeso() + "\n");
-        }
-        JOptionPane.showMessageDialog(null, "Datos exportados exitosamente.");
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Error al exportar datos: " + e.getMessage());
     }
-}
+    public static void importarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño, LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("datos.txt"))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] fields = linea.split(",");
+                switch (fields[0]) {
+                    case "Ingeniero":
+                        Ingeniero ingeniero = new Ingeniero(fields[1], fields[2], fields[3], fields[4], Integer.parseInt(fields[5]), Float.parseFloat(fields[6]), fields[7]);
+                        listaIngenieros.add(ingeniero);
+                        break;
+                    case "Diseño":
+                        EstDiseño diseño = new EstDiseño(fields[1], fields[2], fields[3], fields[4], fields[5], Integer.parseInt(fields[6]), fields[7]);
+                        listaDiseño.add(diseño);
+                        break;
+                    case "Portatil":
+                        portatil pc = new portatil(fields[1], fields[2], Float.parseFloat(fields[3]), Float.parseFloat(fields[4]), fields[5], fields[6]);
+                        listaPortatil.add(pc);
+                        break;
+                    case "Tableta":
+                        Tableta_grafica tablet = new Tableta_grafica(fields[1], fields[2], Float.parseFloat(fields[3]), Float.parseFloat(fields[4]), fields[5], Float.parseFloat(fields[6]));
+                        listaTableta.add(tablet);
+                        break;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Datos importados exitosamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al importar datos: " + e.getMessage());
+        }
+    }    
 }
