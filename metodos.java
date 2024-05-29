@@ -98,7 +98,7 @@ public class metodos {
                         exportarDatos(listaIngenieros, listaDiseño, listaPortatil, listaTableta);
                     }
                     break;
-                    case 4:
+                case 4:
                     importarDatos(listaIngenieros, listaDiseño, listaPortatil, listaTableta);
                     break;
                 case 0:
@@ -585,54 +585,29 @@ public class metodos {
 
     public static void exportarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño,
             LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
-        try (FileWriter writer = new FileWriter("datos.txt")) {
-            for (Ingeniero ingeniero : listaIngenieros) {
-                writer.write("Ingeniero:  Cedula: " + ingeniero.getCedula() + " Nombre: " + ingeniero.getNombre()
-                        + " Apellido: " + ingeniero.getApellido() + " Telefono: " + ingeniero.getTelefono()
-                        + " Semestre: " + ingeniero.getSemestre() + " Promedio: " + ingeniero.getPromedio()
-                        + " Serial: " + ingeniero.getSerial() + "\n");
-            }
-            for (EstDiseño diseño : listaDiseño) {
-                writer.write("Diseño:  Cedula: " + diseño.getCedula() + " Nombre: " + diseño.getNombre() + " Apellido: "
-                        + diseño.getApellido() + " Telefono: " + diseño.getTelefono() + " Modalidad de estudio: "
-                        + diseño.getM_estudio() + " Cantidad de materias: " + diseño.getC_materias() + " Serial: "
-                        + diseño.getSerial() + "\n");
-            }
-            for (portatil pc : listaPortatil) {
-                writer.write("Portatil:  Serial: " + pc.getSerial() + " Marca: " + pc.getMarca() + " Tamaño: "
-                        + pc.getTamaño() + " Precio: " + pc.getPrecio() + " Sistema Operativo: " + pc.getOS()
-                        + " Procesador: " + pc.getCPU() + "\n");
-            }
-            for (Tableta_grafica tablet : listaTableta) {
-                writer.write("Tableta:  Serial: " + tablet.getSerial() + " Marca: " + tablet.getMarca() + " Tamaño: "
-                        + tablet.getTamaño() + " Precio: " + tablet.getPrecio() + " Almacenamiento: "
-                        + tablet.getAlmacenamiento() + " Peso: " + tablet.getPeso() + "\n");
-            }
-            JOptionPane.showMessageDialog(null, "Datos exportados exitosamente.");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al exportar datos: " + e.getMessage());
-        }
-    }
-    public static void importarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño, LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
         try (BufferedReader reader = new BufferedReader(new FileReader("datos.txt"))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                String[] fields = linea.split(",");
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] fields = line.split(",");
                 switch (fields[0]) {
                     case "Ingeniero":
-                        Ingeniero ingeniero = new Ingeniero(fields[1], fields[2], fields[3], fields[4], Integer.parseInt(fields[5]), Float.parseFloat(fields[6]), fields[7]);
+                        Ingeniero ingeniero = new Ingeniero(fields[1], fields[2], fields[3], fields[4],
+                                Integer.parseInt(fields[5]), Float.parseFloat(fields[6]), fields[7]);
                         listaIngenieros.add(ingeniero);
                         break;
                     case "Diseño":
-                        EstDiseño diseño = new EstDiseño(fields[1], fields[2], fields[3], fields[4], fields[5], Integer.parseInt(fields[6]), fields[7]);
+                        EstDiseño diseño = new EstDiseño(fields[1], fields[2], fields[3], fields[4], fields[5],
+                                Integer.parseInt(fields[6]), fields[7]);
                         listaDiseño.add(diseño);
                         break;
                     case "Portatil":
-                        portatil pc = new portatil(fields[1], fields[2], Float.parseFloat(fields[3]), Float.parseFloat(fields[4]), fields[5], fields[6]);
+                        portatil pc = new portatil(fields[1], fields[2], Float.parseFloat(fields[3]),
+                                Float.parseFloat(fields[4]), fields[5], fields[6]);
                         listaPortatil.add(pc);
                         break;
                     case "Tableta":
-                        Tableta_grafica tablet = new Tableta_grafica(fields[1], fields[2], Float.parseFloat(fields[3]), Float.parseFloat(fields[4]), fields[5], Float.parseFloat(fields[6]));
+                        Tableta_grafica tablet = new Tableta_grafica(fields[1], fields[2], Float.parseFloat(fields[3]),
+                                Float.parseFloat(fields[4]), fields[5], Float.parseFloat(fields[6]));
                         listaTableta.add(tablet);
                         break;
                 }
@@ -641,5 +616,40 @@ public class metodos {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al importar datos: " + e.getMessage());
         }
-    }    
+    }
+
+    public static void importarDatos(LinkedList<Ingeniero> listaIngenieros, LinkedList<EstDiseño> listaDiseño,
+            LinkedList<portatil> listaPortatil, LinkedList<Tableta_grafica> listaTableta) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("datos.txt"))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] fields = linea.split(",");
+                switch (fields[0]) {
+                    case "Ingeniero":
+                        Ingeniero ingeniero = new Ingeniero(fields[1], fields[2], fields[3], fields[4],
+                                Integer.parseInt(fields[5]), Float.parseFloat(fields[6]), fields[7]);
+                        listaIngenieros.add(ingeniero);
+                        break;
+                    case "Diseño":
+                        EstDiseño diseño = new EstDiseño(fields[1], fields[2], fields[3], fields[4], fields[5],
+                                Integer.parseInt(fields[6]), fields[7]);
+                        listaDiseño.add(diseño);
+                        break;
+                    case "Portatil":
+                        portatil pc = new portatil(fields[1], fields[2], Float.parseFloat(fields[3]),
+                                Float.parseFloat(fields[4]), fields[5], fields[6]);
+                        listaPortatil.add(pc);
+                        break;
+                    case "Tableta":
+                        Tableta_grafica tablet = new Tableta_grafica(fields[1], fields[2], Float.parseFloat(fields[3]),
+                                Float.parseFloat(fields[4]), fields[5], Float.parseFloat(fields[6]));
+                        listaTableta.add(tablet);
+                        break;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Datos importados exitosamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al importar datos: " + e.getMessage());
+        }
+    }
 }
